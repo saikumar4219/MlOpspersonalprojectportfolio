@@ -1,0 +1,10 @@
+---
+- name: Import user proerties 
+  include_vars:
+    file: user_input_properties.yml
+
+- name: install apache
+  apt:
+    name: "{{jenkinsvar.name}}"
+    state: present
+

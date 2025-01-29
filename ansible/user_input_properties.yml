@@ -1,0 +1,24 @@
+---
+
+
+installationDir: /home/saikumar/personalproject/ansible
+
+
+
+
+
+
+
+jenkinsvar:
+  name: apache2
+  ip:
+  enable: y
+  repo_path:
+  version: 2.441
+  port: 8081
+  vol: y
+  ldap: 
+  imagepath: "{{installationDir}}/Image_files/jenkins-img/"
+  filename:
+  volume_version:  
+

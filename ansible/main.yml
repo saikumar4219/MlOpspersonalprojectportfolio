@@ -1,0 +1,8 @@
+--- 
+- name: basic ansible command
+  vars_files:
+    - user_input_properties.yml
+  hosts: localhost
+  roles:
+   - role: roles/install_apache
+  become: yes
