@@ -1,0 +1,42 @@
+---
+- name: Check Jenkins Pipeline Status
+ # hosts: localhost
+ # gather_facts: no
+  include_vars:
+    file: user_input_properties.yml
+
+- name: Get last pipeline build status
+  uri:
+    url: "{{jenkins_server}}/job/{{jenkins_pipeline}}/lastBuild/api/json"
+    method: GET
+    headers:
+      Authorization: "Basic {{(jenkins_user+':'+jenkins_token) | b64encode}}"
+    #  Authorization: "Bearer {{jenkins_token}}"
+    return_content: yes
+    status_code: 200
+  register: pipeline_status
+
+- name: Extract pipeline result
+  set_fact:
+    last_build_result: "{{ pipeline_status.json.result | default('FAILURE') }}"
+
+- name: Debug pipeline result
+  debug:
+    msg: "Last build result: {{ last_build_result }}"
+
+- name: Run next playbook on success
+  fail:
+    msg: "Pipeline success"
+   #   include_playbook: next_steps.yml
+  when: last_build_result == "SUCCESS"
+
+- name: Fail the playbook on pipeline aborted
+  fail:
+    msg: "Pipeline aborted"
+  when: last_build_result == "ABORTED" 
+
+- name: Fail the playbook on pipeline failure
+ # fail:
+  #  msg: "Pipeline failed"
+  include_tasks: fetch_error_details.yml
+  when: last_build_result == "FAILURE"

@@ -1,0 +1,21 @@
+---
+# tasks/fetch_error_details.yml
+
+- name: Get error details from Jenkins on failure
+  uri:
+    url: "{{ jenkins_server }}/job/{{ jenkins_pipeline }}/lastBuild/logText/progressiveText?start=0"
+    method: GET
+    headers:
+      Authorization: "Basic {{(jenkins_user+':'+jenkins_token) | b64encode}}"
+   #   Authorization: "Bearer {{ jenkins_token }}"
+    return_content: yes
+    status_code: 200
+  register: error_details
+
+- name: Set error message as a fact
+  set_fact:
+    pipeline_error_message: "{{ error_details.content | default('No error message found') }}"
+
+- name: Debug error message
+  debug:
+    msg: "Pipeline failed! Error message: {{ pipeline_error_message }}"

@@ -1,8 +1,9 @@
 --- 
-- name: basic ansible command
+- name: checking pipeline status
+  hosts: localhost
+  gather_facts: no
   vars_files:
     - user_input_properties.yml
-  hosts: localhost
   roles:
-   - role: roles/install_apache
+   - role: check_pipeline_status
   become: yes

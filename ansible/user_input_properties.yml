@@ -22,3 +22,15 @@ jenkinsvar:
   filename:
   volume_version:  
 
+#pipeline onfigurations
+jenkins_user: admin
+jenkins_server: "http://localhost:8081"
+jenkins_pipeline: "MlOps"
+jenkins_token: "116fee36bfb54d9b824b43f7d0be8971f2"
+
+
+
+
+
+
+
