@@ -16,7 +16,7 @@
     status_code: 200
   register: pipeline_status
 
-- name: Extract pipeline result
+- name: Extract pipeline results
   set_fact:
     last_build_result: "{{ pipeline_status.json.result | default('FAILURE') }}"
 

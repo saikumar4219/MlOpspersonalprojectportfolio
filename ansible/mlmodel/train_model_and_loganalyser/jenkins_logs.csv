@@ -1,0 +1,6 @@
+log_message,label
+"Build failed due to timeout | Connection lost to server","Error"
+"Build successful | Tests passed","Success"
+"Dependency missing | sh: mvn: command not found","Error"
+"Unknown command: | ERROR: script returned exit code 1","Sytax error in jenkins pipeline"
+

@@ -1,0 +1,70 @@
+Started by user admin
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/MlOps
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Clone Repository)
+[Pipeline] git
+The recommended git tool is: NONE
+using credential gitcreds1
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/MlOps/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/saikumar4219/MlOpspersonalprojectportfolio.git # timeout=10
+Fetching upstream changes from https://github.com/saikumar4219/MlOpspersonalprojectportfolio.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.39.2'
+using GIT_ASKPASS to set credentials gitcreds1
+ > git fetch --tags --force --progress -- https://github.com/saikumar4219/MlOpspersonalprojectportfolio.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision a5fb093fef567c0bec74f5fec4228e316f95df7e (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f a5fb093fef567c0bec74f5fec4228e316f95df7e # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git branch -D main # timeout=10
+ > git checkout -b main a5fb093fef567c0bec74f5fec4228e316f95df7e # timeout=10
+Commit message: "added basic protfolio react application"
+ > git rev-list --no-walk a5fb093fef567c0bec74f5fec4228e316f95df7e # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Install Dependencies)
+[Pipeline] sh
++ cd Protfolio/saikumarprotfolio
++ npm install
+
+up to date, audited 1325 packages in 5s
+
+268 packages are looking for funding
+  run `npm fund` for details
+
+8 vulnerabilities (2 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build React App)
+[Pipeline] sh
++ cd Protfolio/saikumarprotfolio
++ npm fwr run build
+Unknown command: "fwr"
+
+To see a list of supported npm commands, run:
+  npm help
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] echo
+Build failed!
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+ERROR: script returned exit code 1
+Finished: FAILURE

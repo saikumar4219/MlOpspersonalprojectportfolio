@@ -1,5 +1,15 @@
 ---
 # tasks/fetch_error_details.yml
+- name: Get present working directory
+  command: pwd
+  register: pwd_output
+  changed_when: false
+
+- name: Ensure the logs directory exists
+  file:
+    path: "{{ pwd_output.stdout }}/mlmodel/jenkins_logs"
+    state: directory
+    mode: '0755'
 
 - name: Get error details from Jenkins on failure
   uri:
@@ -7,15 +17,30 @@
     method: GET
     headers:
       Authorization: "Basic {{(jenkins_user+':'+jenkins_token) | b64encode}}"
-   #   Authorization: "Bearer {{ jenkins_token }}"
     return_content: yes
     status_code: 200
   register: error_details
 
-- name: Set error message as a fact
-  set_fact:
-    pipeline_error_message: "{{ error_details.content | default('No error message found') }}"
+- name: Save logs to a file
+  copy:
+    content: "{{ error_details.content }}"
+    dest: "{{ pwd_output.stdout }}/mlmodel/jenkins_logs/jenkins_logs.txt"
+    mode: '0644' 
+    force: yes
 
-- name: Debug error message
-  debug:
-    msg: "Pipeline failed! Error message: {{ pipeline_error_message }}"
+- name: Install dependencies
+  pip:
+    name:
+      - torch
+      - transformers
+      - pandas
+      - scikit-learn
+      - datasets
+    executable: pip3
+
+- name: Train BERT Model
+  command: python3 {{ pwd_output.stdout }}/mlmodel/train_model_and_loganalyser/train_bert_logs.py
+
+
+- name: Run Log Analyzer
+  command: python3 {{ pwd_output.stdout }}/mlmodel/train_model_and_loganalyser/jenkins_log_analyzer.py
